@@ -1,0 +1,22 @@
+    <html ng-app="ledapp">
+        <head>
+
+            <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+            <script src="ledapp.js"></script>
+        </head>
+        <body ng-controller="MainCtrl as main">
+            <p> {{main.blub}} {{blub}}
+            bla </p>
+            <ul>
+              <li ng-repeat="profile in main.profiles">
+                <ul >
+                  <li> {{profile  .value}}</li>
+                  <li ng-repeat="strips in profile.value track by $index">
+                    <input type="range" ng-model="strips" min="0" max="100" ng-change="main.sendValue()"> {{strips}}
+                  </li>
+                </ul>
+              </li>
+            </ul>
+
+        </body>
+    </html>
