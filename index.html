@@ -5,18 +5,31 @@
             <script src="ledapp.js"></script>
         </head>
         <body ng-controller="MainCtrl as main">
-            <p> {{main.blub}} {{blub}}
-            bla </p>
-            <ul>
-              <li ng-repeat="profile in main.profiles">
+            <p> {{main.blub}} <br> {{blub}} <br> {{main.activeProfile}} <br> bla <br>
+            </p>
+
                 <ul >
-                  <li> {{profile  .value}}</li>
-                  <li ng-repeat="strips in profile.value track by $index">
-                    <input type="range" ng-model="strips" min="0" max="100" ng-change="main.sendValue()"> {{strips}}
+                  <li ng-repeat="strips in profiles[main.activeProfile].value track by $index">
+                    {{leds[$index].name}}
+                    <input type="range" ng-model="strips" min="0" max="100" ng-change="main.sendValue(strips, $index)"> {{strips}} {{$index}}
                   </li>
                 </ul>
-              </li>
-            </ul>
+                <form>
+                  1
+                  <div ng-repeat="profile in profiles track by $index">
+                    {{profile.name}}
+                    <input type="radio"
+                      ng-model="main.activeProfile"
+                      ng-value="$index"
+                      name="profileSelector">
+                  </div>
+              </form>
+                  <input class="btn-standard" ng-click="main.saveProfile()" ng-value="save" ng-model="main.activeProfile" type="submit">
+  <!--
+              <p ng-repeat="profile in main.profiles">
+                <button type="submit" ng-model="activeProfile" value="1" name="button"></button>
+              </p> -->
 
+            </table>
         </body>
     </html>
