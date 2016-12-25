@@ -24,7 +24,12 @@
                       name="profileSelector">
                   </div>
               </form>
-                  <input class="btn-standard" ng-click="main.saveProfile()" ng-value="save" ng-model="main.activeProfile" type="submit">
+              <form ng-submit="main.addProfile()">
+                 <input type="text" ng-model="main.profileName"  size="30"
+                        placeholder="add new profile name here">
+                 <input class="btn-primary" type="submit" value="add">
+               </form>
+                <input class="btn-primary" type="submit" value="remove" ng-click="main.removeProfile()">
   <!--
               <p ng-repeat="profile in main.profiles">
                 <button type="submit" ng-model="activeProfile" value="1" name="button"></button>

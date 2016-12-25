@@ -14,7 +14,25 @@ angular.module('ledapp', [])
       if ($scope.profiles !== undefined) {
         console.log($scope.profiles);
       }
-      this.saveProfile = function () {
+      this.addProfile = function () {
+        // use currentProfile as base
+        console.log('activeProfile ' + this.activeProfile);
+        // make a deep copy of the current profile
+        /*
+        some more explanation: JS does make reference copys per default. As I want to create a new object i need to make a deep
+        copy to get to individual objets. this json workaround works as long as there are no functions inside the object (which is not the case)
+        */
+        var currentProfile = JSON.parse(JSON.stringify($scope.profiles[this.activeProfile]));
+        // modify name
+        currentProfile.name = this.profileName;
+        // and reset
+        this.profileName = '';
+        console.log(currentProfile);
+        // push() should return the array length
+        var index = $scope.profiles.push(currentProfile) - 1;
+        console.log(index);
+
+        this.activeProfile = index;
         console.log($scope.profiles);
       };
       console.log($scope.profiles);
