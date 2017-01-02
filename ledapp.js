@@ -16,7 +16,7 @@ angular.module('ledapp', [])
       }
       this.addProfile = function () {
         // use currentProfile as base
-        console.log('activeProfile ' + this.activeProfile);
+        console.log(' add based on activeProfile ' + this.activeProfile);
         // make a deep copy of the current profile
         /*
         some more explanation: JS does make reference copys per default. As I want to create a new object i need to make a deep
@@ -35,15 +35,30 @@ angular.module('ledapp', [])
         this.activeProfile = index;
         console.log($scope.profiles);
       };
+      this.removeProfile = function () {
+        // use currentProfile as base
+        console.log(' remove activeProfile ' + this.activeProfile);
+        try {
+          let arrayLength = $scope.profiles.push();
+          // check if there are remaining profiles
+          if (arrayLength === 1) throw new RangeError('err 10: last profile cannot be deleted');
+          // remove profiles
+          $scope.profiles.splice(this.activeProfile, 1);
+          if (this.activeProfile === (arrayLength - 1)) {
+            this.activeProfile -= 1;
+          }
+        } catch (e) {
+          console.log('i got an error: ' + e.name + ' error message: ' + e.message);
+        } finally {
+          // not yet used
+        }
+      };
       console.log($scope.profiles);
       this.changeProfile = function (newProfile) {
-        console.log('blub');
-        this.activeProfile = newProfile;
-        console.log(this.activeProfile);
+        console.log('just wanted to let you know the PROFILE WAS CHANGED');
       };
       this.sendValue = function (newValue, index) {
         console.log(newValue + ' index: ' + index);
         $scope.profiles[this.activeProfile].value[index] = newValue;
-        console.log('hello');
       };
     });

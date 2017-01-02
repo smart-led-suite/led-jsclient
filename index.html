@@ -1,40 +1,33 @@
-    <html ng-app="ledapp">
-        <head>
-
-            <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-            <script src="ledapp.js"></script>
-        </head>
-        <body ng-controller="MainCtrl as main">
-            <p> {{main.blub}} <br> {{blub}} <br> {{main.activeProfile}} <br> bla <br>
-            </p>
-
-                <ul >
-                  <li ng-repeat="strips in profiles[main.activeProfile].value track by $index">
-                    {{leds[$index].name}}
-                    <input type="range" ng-model="strips" min="0" max="100" ng-change="main.sendValue(strips, $index)"> {{strips}} {{$index}}
-                  </li>
-                </ul>
-                <form>
-                  1
-                  <div ng-repeat="profile in profiles track by $index">
-                    {{profile.name}}
-                    <input type="radio"
-                      ng-model="main.activeProfile"
-                      ng-value="$index"
-                      name="profileSelector">
-                  </div>
-              </form>
-              <form ng-submit="main.addProfile()">
-                 <input type="text" ng-model="main.profileName"  size="30"
-                        placeholder="add new profile name here">
-                 <input class="btn-primary" type="submit" value="add">
-               </form>
-                <input class="btn-primary" type="submit" value="remove" ng-click="main.removeProfile()">
-  <!--
-              <p ng-repeat="profile in main.profiles">
-                <button type="submit" ng-model="activeProfile" value="1" name="button"></button>
-              </p> -->
-
-            </table>
-        </body>
-    </html>
+<!DOCTYPE html>
+  <html ng-app="ledapp">
+    <head>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+      <script src="ledapp.js"></script>
+      <title>LED JSAPP</title>
+    </head>
+    <body ng-controller="MainCtrl as main">
+      <h1> LED CONTROLLER v2 </h1>
+      <ul >
+        <li ng-repeat="strips in profiles[main.activeProfile].value track by $index">
+          {{leds[$index].name}}
+          <input type="range" ng-model="strips" min="0" max="100" ng-change="main.sendValue(strips, $index)"> {{strips}} {{$index}}
+        </li>
+      </ul>
+      <form>
+        <div ng-repeat="profile in profiles track by $index">
+          {{profile.name}}
+          <input type="radio"
+          ng-model="main.activeProfile"
+          ng-value="$index"
+          name="profileSelector"
+          ng-change="main.changeProfile()">
+        </div>
+      </form>
+      <form ng-submit="main.addProfile()">
+       <input type="text" ng-model="main.profileName"  size="30" required="required"
+        placeholder="add new profile name here">
+       <input class="btn-primary" type="submit" value="add">
+      </form>
+        <input class="btn-primary" type="submit" value="remove" ng-click="main.removeProfile()">
+    </body>
+  </html>
