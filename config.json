@@ -1,7 +1,7 @@
 [
   {
    "profiles": [
-          {"name": "profile1", "value": [40, 30, 4, 5]},
+          {"name": "profile1", "value": [40, 30, 4, 50]},
           {"name": "profile2", "value": [70, 4, 4, 3]},
           {"name": "work", "value": [3, 0, 67, 54]}
     ]
