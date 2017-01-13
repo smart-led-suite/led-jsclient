@@ -1,0 +1,7 @@
+{    "leds": [
+      {"id":0, "name": "white", "pin": 25},
+      {"id":1, "name": "red", "pin": 17},
+      {"id":2, "name": "green", "pin": 18},
+      {"id":3, "name": "blue", "pin": 22}
+    ]
+}

@@ -1,10 +1,15 @@
 angular.module('ledapp', [])
     .controller('MainCtrl', function ($scope, $http) {
+      // CONNECTION
+      // JSON
       // get the profiles from JSON file
-      $http.get('config.json').then(function (response) {
-        $scope.profiles = response.data[0].profiles;
-        $scope.leds = response.data[1].leds;
+      $http.get('profiles.json').then(function (response) {
+        $scope.profiles = response.data.profiles;
         console.log($scope.profiles);
+      });
+      // get the led config from JSON file
+      $http.get('led.json').then(function (response) {
+        $scope.leds = response.data.leds;
         console.log($scope.leds);
       });
       $scope.blub = 'sdfkjafla';
@@ -14,6 +19,23 @@ angular.module('ledapp', [])
       if ($scope.profiles !== undefined) {
         console.log($scope.profiles);
       }
+      // SOCKET
+      var connection = new WebSocket('ws://192.168.2.153:8080');
+      // When the connection is open, send some data to the server
+      connection.onopen = function () {
+        connection.send('Ping'); // Send the message 'Ping' to the server
+      };
+
+      // Log errors
+      connection.onerror = function (error) {
+        console.log('WebSocket Error ' + error);
+      };
+
+      // Log messages from the server
+      connection.onmessage = function (e) {
+        console.log('Server: ' + e.data);
+      };
+      // functions
       this.addProfile = function () {
         // use currentProfile as base
         console.log(' add based on activeProfile ' + this.activeProfile);
@@ -54,11 +76,22 @@ angular.module('ledapp', [])
         }
       };
       console.log($scope.profiles);
-      this.changeProfile = function (newProfile) {
+      this.changeProfile = function () {
         console.log('just wanted to let you know the PROFILE WAS CHANGED');
+        console.log($scope.profiles[this.activeProfile]);
+        // send fade message
+        var msg = 'f';
+        // connection.send('f');
+        for (var key in $scope.profiles[this.activeProfile].leds) {
+          // console.log($scope.profiles[this.activeProfile].leds[key]);
+          msg += key + ':' + $scope.profiles[this.activeProfile].leds[key] + ';';
+          // connection.send(key + ':' + $scope.profiles[this.activeProfile].leds[key] + ';');
+        }
+        connection.send(msg);
       };
       this.sendValue = function (newValue, index) {
         console.log(newValue + ' index: ' + index);
-        $scope.profiles[this.activeProfile].value[index] = newValue;
+        connection.send('s' + index + ':' + newValue);
+        $scope.profiles[this.activeProfile].leds[index] = newValue;
       };
     });
