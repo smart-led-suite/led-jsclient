@@ -20,10 +20,12 @@ angular.module('ledapp', [])
         console.log($scope.profiles);
       }
       // SOCKET
-      var connection = new WebSocket('ws://192.168.2.153:8080');
+      var connection = new WebSocket('ws://192.168.0.101:8080');
       // When the connection is open, send some data to the server
       connection.onopen = function () {
-        connection.send('Ping'); // Send the message 'Ping' to the server
+        // connection.send('Ping'); // Send the message 'Ping' to the server
+        connection.send('time=1'); // set time to 1ms -> immediately
+        connection.send('wait=0'); // set time to 1ms -> immediately
       };
 
       // Log errors
@@ -80,18 +82,63 @@ angular.module('ledapp', [])
         console.log('just wanted to let you know the PROFILE WAS CHANGED');
         console.log($scope.profiles[this.activeProfile]);
         // send fade message
-        var msg = 'f';
+        // ESP
+        // var msg = 'f';
+        // led-blaster
+        connection.send('time=1000');
+        connection.send('wait=4');
         // connection.send('f');
         for (var key in $scope.profiles[this.activeProfile].leds) {
-          // console.log($scope.profiles[this.activeProfile].leds[key]);
-          msg += key + ':' + $scope.profiles[this.activeProfile].leds[key] + ';';
-          // connection.send(key + ':' + $scope.profiles[this.activeProfile].leds[key] + ';');
+          // led-blaster
+          var colorCode;
+          console.log(key);
+          switch (Number(key)) {
+            case 0:
+              colorCode = 'w';
+              break;
+            case 1:
+              colorCode = 'r';
+              break;
+            case 2:
+              colorCode = 'g';
+              break;
+            case 3:
+              colorCode = 'b';
+              break;
+          }
+          connection.send(colorCode + '=' + ($scope.profiles[this.activeProfile].leds[key] * 10));
+          // ESP
+          // msg += key + ':' + $scope.profiles[this.activeProfile].leds[key] + ';';
         }
-        connection.send(msg);
+        // ESP
+        // connection.send(msg);
+        // led-blaster
+        // connection.send('time=1');
       };
       this.sendValue = function (newValue, index) {
         console.log(newValue + ' index: ' + index);
-        connection.send('s' + index + ':' + newValue);
+        // led-blaster
+        var colorCode;
+        switch (index) {
+          case 0:
+            colorCode = 'w';
+            break;
+          case 1:
+            colorCode = 'r';
+            break;
+          case 2:
+            colorCode = 'g';
+            break;
+          case 3:
+            colorCode = 'b';
+            break;
+          default:
+            colorCode = 'w';
+        }
+        connection.send('time=1');
+        connection.send(colorCode + '=' + (newValue * 10));
+        // ESP
+      //  connection.send('s' + index + ':' + newValue);
         $scope.profiles[this.activeProfile].leds[index] = newValue;
       };
     });
