@@ -4,6 +4,8 @@
       <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
       <script src="ledapp.js"></script>
       <title>LED JSAPP</title>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body ng-controller="MainCtrl as main">
       <h1> LED CONTROLLER v2 </h1>
@@ -11,7 +13,7 @@
         <li ng-repeat="strips in leds">
           {{strips.name}} <br> {{strips.id}} <br> {{main.activeProfile}} <br> {{profiles[main.activeProfile].leds[strips.id]}} <br>
           <input type="range" min="0" max="100"  ng-model="profiles[main.activeProfile].leds[strips.id]"
-            ng-change="main.sendValue(profiles[main.activeProfile].leds[strips.id], strips.id)" >
+            ng-change="main.sendValue(profiles[main.activeProfile].leds[strips.id], strips.id)" ng-mouseup="main.sendValueOnRelease(profiles[main.activeProfile].leds[strips.id], strips.id)" >
           <!-- <input type="range" ng-model="profiles[activeProfile].leds" min="0" max="100"> {{strips.0}} {{strips}}
           <!--  ng-value="profiles[activeProfile].leds[strips.id]"     ng-change="main.sendValue(strips, strips.id)" -->
         </li>

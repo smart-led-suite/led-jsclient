@@ -24,8 +24,8 @@ angular.module('ledapp', [])
       // When the connection is open, send some data to the server
       connection.onopen = function () {
         // connection.send('Ping'); // Send the message 'Ping' to the server
-        connection.send('time=1'); // set time to 1ms -> immediately
-        connection.send('wait=0'); // set time to 1ms -> immediately
+        // connection.send('time=1'); // set time to 1ms -> immediately
+        // connection.send('wait=0'); // set time to 1ms -> immediately
       };
 
       // Log errors
@@ -78,67 +78,28 @@ angular.module('ledapp', [])
         }
       };
       console.log($scope.profiles);
+
       this.changeProfile = function () {
         console.log('just wanted to let you know the PROFILE WAS CHANGED');
         console.log($scope.profiles[this.activeProfile]);
         // send fade message
-        // ESP
-        // var msg = 'f';
-        // led-blaster
-        connection.send('time=1000');
-        connection.send('wait=4');
-        // connection.send('f');
+        // for profile change we want to fade
+        var msg = 'f';
+        // get values
         for (var key in $scope.profiles[this.activeProfile].leds) {
-          // led-blaster
-          var colorCode;
-          console.log(key);
-          switch (Number(key)) {
-            case 0:
-              colorCode = 'w';
-              break;
-            case 1:
-              colorCode = 'r';
-              break;
-            case 2:
-              colorCode = 'g';
-              break;
-            case 3:
-              colorCode = 'b';
-              break;
-          }
-          connection.send(colorCode + '=' + ($scope.profiles[this.activeProfile].leds[key] * 10));
-          // ESP
-          // msg += key + ':' + $scope.profiles[this.activeProfile].leds[key] + ';';
+          msg += $scope.leds[key].pin + ':' + ($scope.profiles[this.activeProfile].leds[key] * 10) + ';';
         }
-        // ESP
-        // connection.send(msg);
-        // led-blaster
-        // connection.send('time=1');
+        connection.send(msg);
       };
+
       this.sendValue = function (newValue, index) {
         console.log(newValue + ' index: ' + index);
-        // led-blaster
-        var colorCode;
-        switch (index) {
-          case 0:
-            colorCode = 'w';
-            break;
-          case 1:
-            colorCode = 'r';
-            break;
-          case 2:
-            colorCode = 'g';
-            break;
-          case 3:
-            colorCode = 'b';
-            break;
-          default:
-            colorCode = 'w';
-        }
-        connection.send('time=1');
-        connection.send(colorCode + '=' + (newValue * 10));
         // ESP
-      //  connection.send('s' + index + ':' + newValue);
+        connection.send('s' + $scope.leds[index].pin + ':' + (newValue * 10));
+        console.log('s' + $scope.leds[index].pin + ':' + (newValue * 10));
         $scope.profiles[this.activeProfile].leds[index] = newValue;
+      };
+      this.sendValueOnRelease = function (newValue, index) {
+        console.log('mouse was released');
       };
     });
