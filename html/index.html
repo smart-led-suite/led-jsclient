@@ -2,7 +2,9 @@
   <html ng-app="ledapp">
     <head>
       <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-      <script src="ledapp.js"></script>
+      <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+      <script src="./js/services.js"></script>
+      <script src="/js/ledapp.js"></script>
       <title>LED JSAPP</title>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,23 +13,23 @@
       <h1> LED CONTROLLER v2 </h1>
       <ul >
         <li ng-repeat="strips in leds">
-          {{strips.name}} <br> {{strips.id}} <br> {{main.activeProfile}} <br> {{profiles[main.activeProfile].leds[strips.id]}} <br>
-          <input type="range" min="0" max="100"  ng-model="profiles[main.activeProfile].leds[strips.id]"
-            ng-change="main.sendValue(profiles[main.activeProfile].leds[strips.id], strips.id)" ng-mouseup="main.sendValueOnRelease(profiles[main.activeProfile].leds[strips.id], strips.id)" >
-          <!-- <input type="range" ng-model="profiles[activeProfile].leds" min="0" max="100"> {{strips.0}} {{strips}}
-          <!--  ng-value="profiles[activeProfile].leds[strips.id]"     ng-change="main.sendValue(strips, strips.id)" -->
+          {{strips.name}} <br>
+      <!--    id: {{strips.id}} <br>
+           profiles.activeProfile: {{profiles.activeProfile}} <br>
+          current brightness: {{profiles.profiles[profiles.activeProfile].leds[strips.id]}} <br> -->
+          <input type="range" min="0" max="100"  ng-model="profiles.profiles[profiles.activeProfile].leds[strips.id]"
+            ng-change="main.sendValueLive(profiles.profiles[profiles.activeProfile].leds[strips.id], strips.id)" ng-release="main.sendValue()">
         </li>
       </ul>
-      <form>
-        <div ng-repeat="profile in profiles track by $index">
+        <div ng-repeat="profile in profiles.profiles track by $index">
           {{profile.name}}
+
           <input type="radio"
-          ng-model="main.activeProfile"
-          ng-value="$index"
+          ng-model="profiles.activeProfile"
+          ng-value="{{$index}}"
           name="profileSelector"
           ng-change="main.changeProfile()">
         </div>
-      </form>
       <form ng-submit="main.addProfile()">
        <input type="text" ng-model="main.profileName"  size="30" required="required"
         placeholder="add new profile name here">

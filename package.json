@@ -1,0 +1,17 @@
+{
+  "name": "led-webapp-server",
+  "version": "0.0.1",
+  "description": "nodejs server for serving html and handling socketio from led-jsclient",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Sandesh Sharma",
+  "license": "ISC",
+  "dependencies": {
+    "connect": "^3.5.0",
+    "serve-static": "^1.11.2",
+    "socketio": "^1.0.0"
+  }
+}
