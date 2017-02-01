@@ -2,8 +2,8 @@ angular.module('ledapp', ['Services'])
   .controller('MainCtrl', function ($scope, $http, Socket) {
     // *************** config *******************
     var usingNodejs = true;
-    // JSON
-    // for assignments to $scope.profiles.activeProfile
+    // *****************************************
+    // for sending this via socket we need to use a variable
     var main = this;
     $scope.blub = 'sdfkjafla';
     this.blub = 'haddl';
@@ -31,48 +31,20 @@ angular.module('ledapp', ['Services'])
     Socket.on('f', function (data) {
       $scope.profiles.activeProfile = data;
     });
-
-    // functions
     this.addProfile = function () {
       // use currentProfile as base
       console.log(' add based on activeProfile ' + $scope.profiles.activeProfile);
-      // make a deep copy of the current profile
-      /*
-      some more explanation: JS does make reference copys per default. As I want to create a new object i need to make a deep
-      copy to get to individual objets. this json workaround works as long as there are no functions inside the object (which is not the case)
-      */
-      var currentProfile = JSON.parse(JSON.stringify($scope.profiles.profiles[$scope.profiles.activeProfile]));
-      // modify name
-      currentProfile.name = this.profileName;
+      // request new profile profile on server
+      // the server will answer and update the profile object, no need to do it
+      // in this function
       Socket.emit('addProfile', main.profileName);
       // and reset
-      this.profileName = '';
-      console.log(currentProfile);
-      console.log(main.profileName);
-      // push() should return the array length
-      var index = $scope.profiles.profiles.push(currentProfile) - 1;
-      console.log(index);
-      $scope.profiles.activeProfile = index;
-      console.log($scope.profiles.profiles);
+      main.profileName = '';
     };
     this.removeProfile = function () {
       console.log(' remove activeProfile ' + $scope.profiles.activeProfile);
+      // request to remove the current profile on server. more info see addProfile()
       Socket.emit('removeProfile');
-      /*  try {
-          let arrayLength = $scope.profiles.profiles.push();
-          // check if there are remaining profiles
-          if (arrayLength === 1) throw new RangeError('err 10: last profile cannot be deleted');
-          // remove profiles
-          $scope.profiles.profiles.splice($scope.profiles.activeProfile, 1);
-          // active profile has to be decreased
-          if ($scope.profiles.activeProfile === (arrayLength - 1)) {
-            $scope.profiles.activeProfile -= 1;
-          }
-        } catch (e) {
-          console.log('i got an error: ' + e.name + ' error message: ' + e.message);
-        } finally {
-          // not yet used
-        }*/
     };
     console.log($scope.profiles.profiles);
     this.changeProfile = function () {
@@ -105,10 +77,14 @@ angular.module('ledapp', ['Services'])
         // $scope.profiles.profiles[$scope.profiles.activeProfile].leds[index] = parseInt(newValue);
       }
     };
+    /*
+    *** this is not used right now because socket.io is still implementing *****
+    *** volatile on client side. once its there, we'll use it ******************
     // only used by node
     this.sendValue = function () {
       // because of using volatile in sendValueLive we're sending it non-volatile on release
       console.log('on release sent');
       Socket.emit('s', $scope.profiles);
     };
+    */
   });
