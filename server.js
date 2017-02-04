@@ -11,7 +11,7 @@ var leds = JSON.parse(
 console.log(profiles);
 console.log(leds);
 // init led-blaster stream
-var wstream = fs.createWriteStream('/tmp/led-blaster');
+var wstream = fs.createWriteStream('/dev/led-blaster');
 // converts the JS objects into strings readable by led-blaster
 var ledBlasterStringify = function (meaningChar) {
   if (typeof meaningChar !== 'string') {
