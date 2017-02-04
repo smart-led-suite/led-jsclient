@@ -11,7 +11,7 @@ var leds = JSON.parse(
 console.log(profiles);
 console.log(leds);
 // init led-blaster stream
-var wstream = fs.createWriteStream('/tmp/led-blaster');
+var wstream = fs.createWriteStream('/dev/led-blaster');
 // converts the JS objects into strings readable by led-blaster
 var ledBlasterStringify = function (meaningChar) {
   if (typeof meaningChar !== 'string') {
@@ -24,8 +24,7 @@ var ledBlasterStringify = function (meaningChar) {
     for (var i = 0; i < leds.leds.length; i++) {
       initString += leds.leds[i].pin +
         ':' +
-        (profiles.profiles[profiles.activeProfile].leds[leds.leds[i].id] * 10) +
-        ';';
+        (profiles.profiles[profiles.activeProfile].leds[leds.leds[i].id] * 10);
     }
     // add newline
     initString += '\n';
@@ -39,7 +38,7 @@ wstream.write(ledBlasterStringify('i'));
 // connect server (for static file delivery)
 var server = connect()
   .use(serveStatic(path.join(__dirname, '/html/')))
-  .listen(8080);
+  .listen(80);
 // setup the socket
 var io = socket.listen(server);
 io.on('connection', function (socket) {
@@ -53,14 +52,14 @@ io.on('connection', function (socket) {
     profiles = data;
     console.log(data);
     socket.broadcast.emit('s', profiles);
-    //write to led-blaster
+    // write to led-blaster
     wstream.write(ledBlasterStringify('s'));
   });
   socket.on('f', function (data) {
     profiles.activeProfile = data;
     console.log(data);
     socket.broadcast.emit('f', profiles.activeProfile);
-    //write to led-blaster
+    // write to led-blaster
     wstream.write(ledBlasterStringify('f'));
   });
   socket.on('addProfile', function (profileName) {
@@ -86,7 +85,7 @@ io.on('connection', function (socket) {
     socket.emit('s', profiles);
     // send to all other clients
     socket.broadcast.emit('s', profiles);
-    //write to led-blaster
+    // write to led-blaster
     wstream.write(ledBlasterStringify('f'));
   });
   socket.on('removeProfile', function () {
@@ -106,7 +105,7 @@ io.on('connection', function (socket) {
       socket.emit('s', profiles);
       // send to all other clients
       socket.broadcast.emit('s', profiles);
-      //write to led-blaster
+      // write to led-blaster
       wstream.write(ledBlasterStringify('s'));
     } catch (e) {
       console.log('i got an error: ' + e.name + ' error message: ' + e.message);
