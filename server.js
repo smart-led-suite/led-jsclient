@@ -39,6 +39,7 @@ wstream.write(ledBlasterStringify('i'));
 // connect server (for static file delivery)
 var server = connect()
   .use(serveStatic(path.join(__dirname, '/html/')))
+  .use('/config', serveStatic(path.join(__dirname, '/html/')))
   .listen(8080);
 // setup the socket
 var io = socket.listen(server);
@@ -53,7 +54,7 @@ io.on('connection', function (socket) {
     profiles = data;
     console.log(data);
     socket.broadcast.emit('s', profiles);
-    //write to led-blaster
+    // write to led-blaster
     wstream.write(ledBlasterStringify('s'));
   });
   socket.on('f', function (data) {
