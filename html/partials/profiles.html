@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<div ng-show="!loadingComplete">
+  loading...
+</div>
+<div  ng-show="loadingComplete">
+    <h1> LED CONTROLLER v2 </h1>
+    <ul >
+      <li>
+        brightness: <br>
+        <input type="range" min="0" max="10"  ng-model="profiles.profiles[profiles.activeProfile].brightness"
+          ng-change="main.sendValueLive()">
+      </li>
+      <li ng-repeat="strips in leds">
+        {{strips.name}} <br>
+    <!--    id: {{strips.id}} <br>
+         profiles.activeProfile: {{profiles.activeProfile}} <br>
+        current brightness: {{profiles.profiles[profiles.activeProfile].leds[strips.id]}} <br> -->
+        <input type="range" min="0" max="100"  ng-model="profiles.profiles[profiles.activeProfile].leds[strips.id]"
+          ng-change="main.sendValueLive(profiles.profiles[profiles.activeProfile].leds[strips.id], strips.id)" ng-release="main.sendValue()">
+      </li>
+    </ul>
+      <div ng-repeat="profile in profiles.profiles track by $index">
+        {{profile.name}}
+
+        <input type="radio"
+        ng-model="profiles.activeProfile"
+        ng-value="{{$index}}"
+        name="profileSelector"
+        ng-change="main.changeProfile()">
+      </div>
+    <form ng-submit="main.addProfile()">
+     <input type="text" ng-model="main.profileName"  size="30" required="required"
+      placeholder="add new profile name here">
+     <input class="btn-primary" type="submit" value="add">
+    </form>
+      <input class="btn-primary" type="submit" value="remove" ng-click="main.removeProfile()">
+</div>

@@ -25,6 +25,9 @@ angular.module('Services', [])
             }
           });
         });
+      },
+      connected: function () {
+        return socket.connected;
       }
     };
   });

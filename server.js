@@ -24,7 +24,8 @@ var ledBlasterStringify = function (meaningChar) {
     for (var i = 0; i < leds.leds.length; i++) {
       initString += leds.leds[i].pin +
         ':' +
-        (profiles.profiles[profiles.activeProfile].leds[leds.leds[i].id] * 10);
+        (profiles.profiles[profiles.activeProfile].leds[leds.leds[i].id] * profiles.profiles[profiles.activeProfile].brightness) +
+        ';';
     }
     // add newline
     initString += '\n';
@@ -38,6 +39,7 @@ wstream.write(ledBlasterStringify('i'));
 // connect server (for static file delivery)
 var server = connect()
   .use(serveStatic(path.join(__dirname, '/html/')))
+  .use('/config', serveStatic(path.join(__dirname, '/html/')))
   .listen(80);
 // setup the socket
 var io = socket.listen(server);
@@ -55,6 +57,15 @@ io.on('connection', function (socket) {
     // write to led-blaster
     wstream.write(ledBlasterStringify('s'));
   });
+  // if we're still connected and want to get the information we send it
+  socket.on('getProfileInfo', function () {
+    console.log('got init request');
+    // send profiles and leds to javascript
+    socket.emit('init', [
+      profiles,
+      leds
+    ]);
+  })
   socket.on('f', function (data) {
     profiles.activeProfile = data;
     console.log(data);
