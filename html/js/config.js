@@ -4,7 +4,7 @@ angular.module('ledapp')
     $routeProvider
       .when('/', {
         templateUrl: 'partials/profiles.html',
-        controller: 'MainCtrl'
+        controller: 'MainCtrl as main'
       })
       .when('/config', {
         templateUrl: 'partials/ledconfig.html',

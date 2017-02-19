@@ -4,11 +4,11 @@ console.log('ledapp was created');
 angular.module('ledapp').controller('MainCtrl', function ($scope, $http, Socket) {
   // *************** config *******************
   var usingNodejs = true;
+  $scope.loadingComplete = false;
   // *****************************************
+  console.log('ledapp controller started');
   // for sending this via socket we need to use a variable
   var main = this;
-  $scope.blub = 'sdfkjafla';
-  this.blub = 'haddl';
   if ($scope.profiles !== undefined) {
     console.log($scope.profiles);
   } else {
@@ -23,7 +23,15 @@ angular.module('ledapp').controller('MainCtrl', function ($scope, $http, Socket)
     //  $scope.profiles.activeProfile = data[0].activeProfile;
     console.log(this);
     console.log(data[0]);
+    // make page visible
+    // $scope.$digest(function () {
+    $scope.loadingComplete = true;
+    // })
   });
+  // if we're still connected we want to ask for an init package
+  if (Socket.connected()) {
+    Socket.emit('getProfileInfo');
+  }
   Socket.on('s', function (data) {
     // console.log($scope.profiles);
     $scope.profiles = data;
@@ -48,7 +56,7 @@ angular.module('ledapp').controller('MainCtrl', function ($scope, $http, Socket)
     // request to remove the current profile on server. more info see addProfile()
     Socket.emit('removeProfile');
   };
-  console.log($scope.profiles.profiles);
+  //console.log($scope.profiles.profiles);
   this.changeProfile = function () {
     console.log('just wanted to let you know the PROFILE WAS CHANGED');
     console.log($scope.profiles.activeProfile);
