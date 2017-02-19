@@ -1,25 +1,44 @@
 <!DOCTYPE html>
-  <html ng-app="ledapp">
-    <head>
-      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-      <script src="/socket.io/socket.io.js"></script>
-      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.js"></script>
-    <!--  <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script> -->
-      <script src="./js/services.js"></script>
-      <script src="/js/ledapp.js"></script>
-      <script src="/js/config.js"></script>
-      <script src="/js/configController.js"></script>
-      <title>LED JSAPP</title>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <h2> LED CONTROLLER v2 </h2>
-      <div ng-view> </div>
-    </body>
-    <footer>
-      <p>LED Webapp by sansha</p>
-      <a href="/config">LED config</a>
-      <a href="/">home</a>
-    </footer>
-  </html>
+<html ng-app="ledapp">
+
+<head>
+    <!-- include bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- include angular and socketio -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.js"></script>
+    <!-- include custom js -->
+    <script src="./js/services.js"></script>
+    <script src="/js/ledapp.js"></script>
+    <script src="/js/config.js"></script>
+    <script src="/js/configController.js"></script>
+    <title>LED JSAPP</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h3>LED Controller</h3>
+            <small> by sansha </small>
+        </div>
+    </div>
+    <div class="container">
+        <div ng-view> </div>
+    </div>
+</body>
+<footer>
+    <div class="container">
+        <p>LED Webapp by sansha</p>
+        <a href="/config">LED config</a>
+        <a href="/">home</a>
+    </div>
+</footer>
+</html>
