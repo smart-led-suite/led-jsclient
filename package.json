@@ -10,6 +10,8 @@
   "author": "Sandesh Sharma",
   "license": "ISC",
   "dependencies": {
+    "angular-bootstrap": "^0.12.2",
+    "bootstrap-slider": "^9.7.2",
     "connect": "^3.5.0",
     "serve-static": "^1.11.2",
     "socketio": "^1.0.0"

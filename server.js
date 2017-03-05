@@ -40,6 +40,7 @@ wstream.write(ledBlasterStringify('i'));
 var server = connect()
   .use(serveStatic(path.join(__dirname, '/html/')))
   .use('/config', serveStatic(path.join(__dirname, '/html/')))
+  .use('/bootstrap', serveStatic(path.join(__dirname, '/node_modules/angular-bootstrap')))
   .listen(80);
 // setup the socket
 var io = socket.listen(server);
